@@ -1,0 +1,300 @@
+0: 
+  class^2: 0
+  class^3: 0
+1: 
+  class^2: 1
+  class^3: 1
+2: 
+  class^2: '4'
+  pred: 'error'
+3: 
+  class^2: 9
+  class^3: 27
+4: 
+  class^2: 16
+  class^3: 64
+5: 
+  class^2: 25
+  class^3: 125
+6: 
+  class^2: 36
+  class^3: 216
+7: 
+  class^2: 49
+  class^3: 343
+8: 
+  class^2: 64
+  class^3: 512
+9: 
+  class^2: 81
+  class^3: 729
+10: 
+  class^2: 100
+  class^3: 1000
+11: 
+  class^2: 121
+  class^3: 1331
+12: 
+  class^2: 144
+  class^3: 1728
+13: 
+  class^2: 169
+  class^3: 2197
+14: 
+  class^2: 196
+  class^3: 2744
+15: 
+  class^2: 225
+  class^3: 3375
+16: 
+  class^2: 256
+  class^3: 4096
+17: 
+  class^2: 289
+  class^3: 4913
+18: 
+  class^2: 324
+  class^3: 5832
+19: 
+  class^2: 361
+  class^3: 6859
+20: 
+  class^2: 400
+  class^3: 8000
+21: 
+  class^2: 441
+  class^3: 9261
+22: 
+  class^2: 484
+  class^3: 10648
+23: 
+  class^2: 529
+  class^3: 12167
+24: 
+  class^2: 576
+  class^3: 13824
+25: 
+  class^2: 625
+  class^3: 15625
+26: 
+  class^2: 676
+  class^3: 17576
+27: 
+  class^2: 729
+  class^3: 19683
+28: 
+  class^2: 784
+  class^3: 21952
+29: 
+  class^2: 841
+  class^3: 24389
+30: 
+  class^2: 900
+  class^3: 27000
+31: 
+  class^2: 961
+  class^3: 29791
+32: 
+  class^2: 1024
+  class^3: 32768
+33: 
+  class^2: 1089
+  class^3: 35937
+34: 
+  class^2: 1156
+  class^3: 39304
+35: 
+  class^2: 1225
+  class^3: 42875
+36: 
+  class^2: 1296
+  class^3: 46656
+37: 
+  class^2: 1369
+  class^3: 50653
+38: 
+  class^2: 1444
+  class^3: 54872
+39: 
+  class^2: 1521
+  class^3: 59319
+40: 
+  class^2: 1600
+  class^3: 64000
+41: 
+  class^2: 1681
+  class^3: 68921
+42: 
+  class^2: 1764
+  class^3: 74088
+43: 
+  class^2: 1849
+  class^3: 79507
+44: 
+  class^2: 1936
+  class^3: 85184
+45: 
+  class^2: 2025
+  class^3: 91125
+46: 
+  class^2: 2116
+  class^3: 97336
+47: 
+  class^2: 2209
+  class^3: 103823
+48: 
+  class^2: 2304
+  class^3: 110592
+49: 
+  class^2: 2401
+  class^3: 117649
+50: 
+  class^2: 2500
+  class^3: 125000
+51: 
+  class^2: 2601
+  class^3: 132651
+52: 
+  class^2: 2704
+  class^3: 140608
+53: 
+  class^2: 2809
+  class^3: 148877
+54: 
+  class^2: 2916
+  class^3: 157464
+55: 
+  class^2: 3025
+  class^3: 166375
+56: 
+  class^2: 3136
+  class^3: 175616
+57: 
+  class^2: 3249
+  class^3: 185193
+58: 
+  class^2: 3364
+  class^3: 195112
+59: 
+  class^2: 3481
+  class^3: 205379
+60: 
+  class^2: 3600
+  class^3: 216000
+61: 
+  class^2: 3721
+  class^3: 226981
+62: 
+  class^2: 3844
+  class^3: 238328
+63: 
+  class^2: 3969
+  class^3: 250047
+64: 
+  class^2: 4096
+  class^3: 262144
+65: 
+  class^2: 4225
+  class^3: 274625
+66: 
+  class^2: 4356
+  class^3: 287496
+67: 
+  class^2: 4489
+  class^3: 300763
+68: 
+  class^2: 4624
+  class^3: 314432
+69: 
+  class^2: 4761
+  class^3: 328509
+70: 
+  class^2: 4900
+  class^3: 343000
+71: 
+  class^2: 5041
+  class^3: 357911
+72: 
+  class^2: 5184
+  class^3: 373248
+73: 
+  class^2: 5329
+  class^3: 389017
+74: 
+  class^2: 5476
+  class^3: 405224
+75: 
+  class^2: 5625
+  class^3: 421875
+76: 
+  class^2: 5776
+  class^3: 438976
+77: 
+  class^2: 5929
+  class^3: 456533
+78: 
+  class^2: 6084
+  class^3: 474552
+79: 
+  class^2: 6241
+  class^3: 493039
+80: 
+  class^2: 6400
+  class^3: 512000
+81: 
+  class^2: 6561
+  class^3: 531441
+82: 
+  class^2: 6724
+  class^3: 551368
+83: 
+  class^2: 6889
+  class^3: 571787
+84: 
+  class^2: 7056
+  class^3: 592704
+85: 
+  class^2: 7225
+  class^3: 614125
+86: 
+  class^2: 7396
+  class^3: 636056
+87: 
+  class^2: 7569
+  class^3: 658503
+88: 
+  class^2: 7744
+  class^3: 681472
+89: 
+  class^2: 7921
+  class^3: 704969
+90: 
+  class^2: 8100
+  class^3: 729000
+91: 
+  class^2: 8281
+  class^3: 753571
+92: 
+  class^2: 8464
+  class^3: 778688
+93: 
+  class^2: 8649
+  class^3: 804357
+94: 
+  class^2: 8836
+  class^3: 830584
+95: 
+  class^2: 9025
+  class^3: 857375
+96: 
+  class^2: 9216
+  class^3: 884736
+97: 
+  class^2: 9409
+  class^3: 912673
+98: 
+  class^2: 9604
+  class^3: 941192
+99: 
+  class^2: 9801
+  class^3: 970299
