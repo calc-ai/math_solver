@@ -102,7 +102,6 @@ def prepare_train_features(examples):
         padding='max_length',
         max_length=216,
     )['input_ids']
- 
     return tokenized_examples
 
 tokenized_datasets = dictdataset.map(prepare_train_features, batched=True, \
