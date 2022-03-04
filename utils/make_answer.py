@@ -1,6 +1,5 @@
-import tensorflow as tf
-from transformers import AutoTokenizer
-from transformers import TFGPT2LMHeadModel
+
+
 from transformers import (
     AutoTokenizer, 
     GPT2LMHeadModel,
@@ -9,20 +8,22 @@ from transformers import (
 )
 import pandas as pd
 import torch
+import os
+from postprocess import postprocess
 # checkpoint_dir = "/workspace/CloudData/Model/GPT_math/weight"
 # latest = tf.train.latest_checkpoint(checkpoint_dir)
 # model = TFGPT2LMHeadModel.from_pretrained('skt/kogpt2-base-v2', from_pt=True)
-device = torch.device('cpu')
+device = torch.device('cuda')
 # model = model.to(device)
-homedir = input("Enter the Home dir: ")
+homedir = os.getcwd()
 modelpath = input("Model: ")
 model = GPT2LMHeadModel.from_pretrained(f"{homedir}/{modelpath}").to(device)
 
-# checkpoint = tf.train.Checkpoint(gpt_model=model)
-# checkpoint.restore(latest)
+
 tokenizer = AutoTokenizer.from_pretrained('skt/kogpt2-base-v2', bos_token='</s>', eos_token='</s>', pad_token='<pad>')
 # model = checkpoint.gpt_model
-data = pd.read_csv(f"{homedir}/CloudData/math/data/test.csv")
+testfile = input('Which data test? filename: ')
+data = pd.read_csv(f"{homedir}/CloudData/math/data/{testfile}.csv")
 
 
 
@@ -34,10 +35,10 @@ def get_answer(sent):
     return sent, class_
 
 def solve_problem(problem, i):
-    input_ids = tokenizer(problem+"<sys>",return_tensors='pt')['input_ids']
+    input_ids = tokenizer(problem+"<sys>",return_tensors='pt')['input_ids'].to('cuda')
     # input_ids = tokenizer(problem,return_tensors='pt')['input_ids']
 
-    output = model.generate(input_ids, max_length = 100, do_sample=True, top_k=50, top_p=0.95, num_return_sequences=1)
+    output = model.generate(input_ids, max_length = 260).to('cpu') #, do_sample=True, top_k=50, top_p=0.95, num_return_sequences=1)
     sentence = tokenizer.decode(output[0].numpy().tolist())
     sentence, class_ = get_answer(sentence)
     # print(problem.rstrip("<sys>"))
@@ -58,17 +59,38 @@ def solve_problem(problem, i):
     print("")
 # for i in data["problem"][:5]:
 #     solve_problem(i)
-filename = input("What file?: ")
+filename = input("What is output_file?: ")
 import sys
 from tqdm import tqdm
 stdout_ = sys.stdout
-sys.stdout = open(f"{filename}.yaml", 'w')
+sys.stdout = open(f"{filename}_.yaml", 'w')
 t = tqdm(range(len(data)))
 for i in t:
     j = data['problem'][i]
     solve_problem(j, i)
 
 sys.stdout = stdout_
+
+classnum = []
+
+with open(f'{filename}_.yaml',"r") as f:
+    with open(f'{filename}.yaml',"w") as t:
+        for i in f.readlines():
+            if 'class' in i or classnum:
+                if i.split(':')[-1].strip().isdigit():
+                    t.write(i)
+                    continue
+                else:
+                    if 'class' in i: t.write('  class: 0\n')
+                    classnum.append(i)
+                    if 'problem' in i:
+                        classnum = []
+                        t.write(i) 
+
+            else: t.write(i)
+
+
+
 
 import yaml
 import json
@@ -79,8 +101,10 @@ print(data)
 result =defaultdict(dict)
 for i in range(len(data)):
     result[str(i+1)] = data[i+1]
+    result[str(i+1)]['answer'] = postprocess(data[i+1]['answer'])
 jstring = json.dumps(result, indent=4)
 with open(f"{filename}.json", "w") as f:
     f.write(jstring)
 
 print(jstring)
+

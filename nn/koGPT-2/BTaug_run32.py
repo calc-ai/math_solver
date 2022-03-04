@@ -47,7 +47,7 @@ def prepare_train_features(examples):
 
 
 
-wandb.init(project="kogpt2_cleandata_BT", entity="math-solver", name='batch8*4')
+wandb.init(project="kogpt2_cleandata_BT", entity="math-solver", name='batch32*4')
 
 tokenizer = AutoTokenizer.from_pretrained('skt/kogpt2-base-v2', bos_token='</s>', sep_token='<sep>', eos_token='</s>', pad_token='<pad>')
 
@@ -70,14 +70,14 @@ print(tokenizer.decode(tokenized_datasets[0]["input_ids"]))
 
 
 args = TrainingArguments(
-    output_dir='kogpt-batch8*4-BT',
+    output_dir='kogpt-finetune-batch32-agu',
     overwrite_output_dir = True,
-    per_device_train_batch_size=8,
+    per_device_train_batch_size=32,
     per_device_eval_batch_size=4,
     # num_train_epochs = 25,
     warmup_steps=400,
     weight_decay=0.1,
-    max_steps=10000,
+    max_steps=8000,
     logging_strategy='steps',
     logging_steps=100,
     save_strategy = 'steps',
