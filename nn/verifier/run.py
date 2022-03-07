@@ -32,9 +32,52 @@ np.random.seed(42)
 random.seed(42) 
 torch.cuda.manual_seed_all(42)
 
+homedir = os.getcwd()
+
+parser = ap.ArgumentParser(description='hyper&input')
+parser.add_argument('-i','--input_data', type=str, default='clean_all_correct', help='you can use csv file. without file extention')
+parser.add_argument('-d','--input_path', type=str, default=None, help='you can use csv filepath.')
+parser.add_argument('-o','--output_dir', type=str, default=homedir, help='std output & model save dir')
+parser.add_argument('-v','--validation_data', type=str, default=None, help='Optional')
+parser.add_argument('--val_dir', type=str, default=None, help='Optional')
+parser.add_argument('-b','--batch_size', type=int, default=16, help='default16')
+parser.add_argument('-s','--valbatch_size_perdevice', type=int, default=8, help='default8')
+parser.add_argument('-n','--modelname', type=str, default='PowerfulMyModel', help='Enter model name')
+parser.add_argument('-p','--projectname', type=str, default='kogpt2', help='Enter model name')
+
+args = parser.parse_args()
+
+val = args.validation_data
+
+val_dir = args.val_dir
+
+filepath = args.input_path
+
+modelname = args.modelname
+
+project = args.projectname
+
+batch_size = args.batch_size
+
+valbatch_size_perdevice = args.valbatch_size_perdevice
+
+device_num = torch.cuda.device_count()
+
 def prepare_train_features(examples):
     for i, j in enumerate(examples['problem']):
         examples['problem'][i] = j + '<sys>' + str(examples["class"][i]) + '<sys>'
+
+        A = tokenizer.encode(examples['problem'][i])
+        B = tokenizer.encode(examples['code'][i])
+        
+        masks = np.zeros(A[0].shape, dtype=np.int32)
+        codes = np.ones(B[0].shape, dtype=np.int32)
+        attention_mask = masks+codes
+
+        data['attention_mask'][i] = ' '.join(map(str,attention_mask))
+        tokenized_examples["labels"] = tokenized_examples["input_ids"].copy()
+
+
 
     tokenized_examples = tokenizer(
         text=examples['problem'],
@@ -42,10 +85,35 @@ def prepare_train_features(examples):
         padding='max_length',
         max_length=260
     )
+    
+    A = tokenizer.encode(examples['problem'][i]+'<sys> 1<sys>', return_tensors='np')
+    B = tokenizer.encode(examples['code'][i], return_tensors='np')
+    
+    masks = torch.zeros(A[0].shape)
+    codes = torch.ones(B[0].shape)
+    attention_mask = torch.concat([masks,codes], axis=0)
+    supple = torch.zeros(260-attention_mask.shape[0])
+    attention_mask = torch.concat([attention_mask,supple], axis=0)
+
+    data['attention_mask'][i] = attention_mask
     tokenized_examples["labels"] = tokenized_examples["input_ids"].copy()
-    for i in range(len(examples['attention_mask'])):
-        tokenized_examples["attention_mask"][i] = torch.tensor(list(map(int,examples['attention_mask'][i].split()))+[0]*(260-len(examples['attention_mask'][i].split())))
-        tokenized_examples["labels"][i] = torch.tensor(list(map(int,examples['labels'][i].split()))+[0]*(260-len(examples['labels'][i].split())))
+
+    return tokenized_examples
+
+# def prepare_train_features(examples):
+#     for i, j in enumerate(examples['problem']):
+#         examples['problem'][i] = j + '<sys>' + str(examples["class"][i]) + '<sys>'
+
+#     tokenized_examples = tokenizer(
+#         text=examples['problem'],
+#         text_pair=examples['code'],
+#         padding='max_length',
+#         max_length=260
+#     )
+#     tokenized_examples["labels"] = tokenized_examples["input_ids"].copy()
+#     for i in range(len(examples['attention_mask'])):
+#         tokenized_examples["attention_mask"][i] = torch.tensor(list(map(int,examples['attention_mask'][i].split()))+[0]*(260-len(examples['attention_mask'][i].split())))
+#         tokenized_examples["labels"][i] = torch.tensor(list(map(int,examples['labels'][i].split()))+[0]*(260-len(examples['labels'][i].split())))
     
      
     return tokenized_examples
@@ -57,12 +125,8 @@ filename = 'verifier_data.csv'
 homedir = os.getcwd()
 
 
-tokenizer = AutoTokenizer.from_pretrained('skt/kogpt2-base-v2', bos_token='</s>', sep_token='<sep>', eos_token='</s>', pad_token='<pad>')
 dataset = load_dataset('csv', data_files=f'{homedir}/CloudData/math/data/{filepath}/{filename}', split='train')
-dictdataset = dataset.train_test_split(0.06)
-tokenized_datasets = dictdataset.map(prepare_train_features, batched=True, remove_columns=dataset.column_names)
-tokenized_datasets.set_format(type='torch', columns=['input_ids', 'attention_mask', 'labels'],device='cuda')
-
+tokenized_datasets = dataset.map(prepare_train_features, batched=True, remove_columns=dataset.column_names)
 
 
 class Verifier(nn.Module):
