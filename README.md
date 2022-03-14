@@ -5,7 +5,7 @@ Math-solver with TUNiB & AIFFEL
 본 레포지토리는 KMWP부문에서 수학문제를 해결하기 위해 사용된 모델들을 huggingface와 PyTorch를 이용하여, 구현한 공간입니다.
 시도해본 모델들은 아래와 같습니다.
 
-## compute-metrics
+## Model
 
 
 
