@@ -101,7 +101,7 @@ if filepath:
             per_device_eval_batch_size=valbatch_size_perdevice,
             warmup_steps=400,
             weight_decay=0.1,
-            max_steps=5000,
+            max_steps=10000,
             logging_strategy='steps',
             logging_steps=100,
             save_strategy = 'steps',
