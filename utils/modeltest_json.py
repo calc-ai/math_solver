@@ -2,6 +2,8 @@ import pandas as pd
 import json
 from sklearn.metrics import accuracy_score as acsr
 from collections import Counter
+import re
+
 
 filename = input('Enter testfile name: ')
 answername = input('Enter correctfile name: ')

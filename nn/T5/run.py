@@ -12,6 +12,7 @@ from transformers import (
     Seq2SeqTrainingArguments,
     Seq2SeqTrainer
 )
+from utils import T5AccuracyMetrics
 from datasets import load_dataset
 import pandas as pd
 import sys
@@ -46,38 +47,7 @@ def solve_problem(problem, i):
         print('error')
     print("")
 
-def compute_metrics(eval_pred):
-    # print(help(eval_pred))
-    logits, labels = eval_pred
-    # print(logits[1])
-    # print(logits, len(logits))
-    # print(attn, len(attn))
-    predictions = np.argmax(logits[0], axis=-1)
-    print(get_answer(tokenizer.decode(predictions[0]))[0].replace('enter','\n'))
-    pred = []
-    label = []
-    A = sys.stdout
-    B = sys.stdin
-    sys.stdout = open(f"{homedir}/stdout.txt","w")
-    sys.stdin = open(f"{homedir}/stdout.txt","r")
-    count = 0 
-    for i, j in zip(predictions, labels):
-        count += 1
-        i = tokenizer.decode(i).replace('enter', '\n')
-        j = tokenizer.decode(j).replace('enter', '\n')
-    
-        try: exec(get_answer(i))
-        except: print("error")
-        try: pred.append(input())
-        except: pred.append("bb")
-        try: exec(get_answer(j))
-        except: print("Error")
-        try: label.append(input())
-        except: label.append("ab")
-    sys.stdout = A
-    sys.stdin = B
-    # print(pred, label)
-    return {'accuracy':acsr(pred, label)}
+
 
 tokenizer = AutoTokenizer.from_pretrained("KETI-AIR/ke-t5-small-ko")
 model = AutoModelForSeq2SeqLM.from_pretrained("KETI-AIR/ke-t5-small-ko")
@@ -85,6 +55,9 @@ data_files = f'{homedir}/CloudData/math/data/train.csv'
 dataset = load_dataset('csv', data_files=data_files, split='train')
 
 dictdataset = dataset.train_test_split(0.02)
+
+compute_metrics = None
+
 
 def prepare_train_features(examples):
 
